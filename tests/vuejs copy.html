@@ -236,6 +236,18 @@
                         "giftDate": "1987",
                     }],
                 }, {
+                    "id": 6,
+                    "name": "Patrick Verschueren",
+                    "birth": "mercredi 12/09/1962",
+                    "photo": "https://www.kuleuven.be/wieiswie/en/person/00004770/photo",
+                    "birthRaw": "[native Date Wed Sep 12 1962 01:00:00 GMT+0100 (heure normale d’Europe centrale)]",
+                    "age": 59,
+                    "countdown": "",
+                    "gifts": [{
+                        "gift": "Hotte assourdissante",
+                        "giftDate": "1987",
+                    }],
+                }, {
                     "id": 7,
                     "name": "Miranda Merron",
                     "birth": "mercredi 02/07/1969",
@@ -272,7 +284,7 @@
             beforeMount() {
                 let theTime = new Date()
                 this.currentYear = theTime.getFullYear();
-                // console.log("année", this.currentYear)
+                console.log("année", this.currentYear)
                 for (let i = this.currentYear; i > 1900; i--) {
                     this.years.push(i);
                 }
@@ -286,26 +298,36 @@
                         localStorage.removeItem('peoplestored');
                     }
                 }
-                // this.people.forEach(element => console.log("chargement des gens", element.name))
+                this.people.forEach(element => console.log("chargement des gens", element.name))
+
+
+
 
 
                 //////////////////////////calcul jours/mois
                 var now = new Date();
                 var currentYear = now.getFullYear()
                 nowMD = (now.getMonth() + 1) + '' + now.getDate();
-                // console.log("nowMD", nowMD)
+                console.log("nowMD", nowMD)
 
 
-                for (i = 0; i < this.people.length; i++) {                
+                for (i = 0; i < this.people.length; i++) {
+                    console.log("nom", this.people[i].name)
+                    console.log("avant chargement", this.people[i].birthRaw)
                     birthRaw = new Date(this.people[i].birthRaw)
-                    let birthRawNow = new Date(this.people[i].birthRaw)                    
-                    birthRaw.setFullYear(currentYear)        
-                    // let birthday = birthRaw.getDate() + '\/' + (birthRaw.getMonth() + 1)
+                    let birthRawNow = new Date(this.people[i].birthRaw)
+                    console.log("-_-_-_-_-_-_-_-date brute avant", birthRaw)
+                    birthRaw.setFullYear(currentYear)
+                    console.log("-_-_-_-_-_-_-_-date brute après", birthRaw)
 
-                    let countdown = Math.ceil((birthRaw - now) / 1000 / 60 / 60 / 24)
+                    let birthday = birthRaw.getDate() + '\/' + (birthRaw.getMonth() + 1)
+
+                    let countdown = Math.round((birthRaw - now) / 1000 / 60 / 60 / 24)
                     var countdownMessage = ""
                     if (countdown === 0) {
                         countdownMessage = "C'est son anniversaire!"
+
+
                     }
                     else if (countdown > 0) {
                         countdownMessage = "Dans " + countdown + " jours"
@@ -313,13 +335,18 @@
                     else {
                         countdown = 365 - countdown
                         countdownMessage = "Dans " + countdown + " jours"
+
                     }
                     this.people[i].countdownMessage = countdownMessage
                     this.people[i].countdown = countdown
+                    ////////////////////EN COURS DE MARDI 4 JANVIER ////////////////////////////
 
-                    // console.log("--------------------", countdownMessage)
-                    // console.log("--------------------", countdown)
-                    // console.log("--------------------", birthday)
+
+
+
+                    console.log("--------------------", countdownMessage)
+                    console.log("--------------------", countdown)
+                    console.log("--------------------", birthday)
 
 
 
@@ -361,9 +388,9 @@
 
                     // photo = btoa(this.insertphoto) ///////BASE64 ENCODAGE, DOIT ETRE EN FILE PAS EN TEXT///////////
                     //fin formattage de la date
-                    if (this.insertphoto === "") {
-                        let alea = Math.floor(Math.random() * 10000 + 1)
-                        photo = "https://loremflickr.com/150/150?lock=" + alea
+                    if(this.insertphoto === ""){
+                        let alea = Math.floor(Math.random()*10000 + 1)
+                        photo = "https://loremflickr.com/150/150?lock="+alea
 
                     } else {
                         photo = this.insertphoto
@@ -405,11 +432,12 @@
                         photo: this.people[idvalue].photo,
                         birthRaw: this.people[idvalue].birthRaw,
                         age: this.people[idvalue].age,
+
                     });
                     for (i = 0; i < this.people[idvalue].gifts.length; i++) {
-                        // console.log("selected=>", this.people[idvalue].name)
-                        // console.log("selected=>", this.people[idvalue].gifts[i].gift)
-                        // console.log("selected=>", this.people[idvalue].gifts[i].giftDate)
+                        console.log("selected=>", this.people[idvalue].name)
+                        console.log("selected=>", this.people[idvalue].gifts[i].gift)
+                        console.log("selected=>", this.people[idvalue].gifts[i].giftDate)
                         if (this.people[idvalue].gifts.length > 0 && this.people[idvalue].gifts.giftDate !== "") {
                             this.gifts.push({
                                 gift: this.people[idvalue].gifts[i].gift,
@@ -425,7 +453,7 @@
                     console.log(index)
 
                     for (i = 0; i < this.people[index].gifts.length; i++) {
-                        // console.log("cadeaux debut", this.people[index].gifts[i].gift)
+                        console.log("cadeaux debut", this.people[index].gifts[i].gift)
                     }
 
                     this.people[index].gifts.push({
@@ -438,12 +466,17 @@
                     });
 
                     for (i = 0; i < this.people[index].gifts.length; i++) {
-                        // console.log("cadeaux après pour ", this.people[index].name, ' ', this.people[index].gifts[i].gift)
+                        console.log("cadeaux après pour ", this.people[index].name, ' ', this.people[index].gifts[i].gift)
                     }
-                },
+                    ////////////////////////////////////EN COURS REMISE A ZERO ///////////////////////////////////
+                    insertGift = "";
+                    insertGiftDate = "";
+                    ////////////////////////////////////FIN EN COURS REMISE A ZERO ///////////////////////////////////
 
+                },
                 deleteGift: function (key) {
                     let selected = this.selected[0].indexLink[0]
+                    console.log("deleeeeeeeeeeeeeeeeeeeeeeeeeeeeeete =>", key, "indexlink", selected)
                     this.people[selected].gifts.splice(key, 1)
                     this.gifts.splice(key, 1)
                 }
@@ -496,8 +529,25 @@
                 }
             }
         });
-        // fin de la blague Vue.js
+        // fin la blague Vue.js
 
+
+
+
+
+
+        /////////////////////////////////////// SERVICE WORKER ////////////////////////////////////
+        function registerServiceWorker() {
+            // enregistre le script sw avec les navigateurs qui le gèrent
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('sw.js', { scope: '/' }).then(() => {
+                    console.log('Service Worker enregistré correctement.');
+                }).catch(error => {
+                    console.log("Erreur lors de l'enregistrement du Service Worker : ", error);
+                });
+            }
+        }
+/////////////////////////////////////// SERVICE WORKER ////////////////////////////////////
     </script>
 
     <!--//////////////////////////////// SCRIPT BOOTSTRAP //////////////////////////////////////-->
@@ -510,11 +560,14 @@
 
 </html>
 
+
 <style>
     ul {
         margin: 0;
         padding: 0;
-        border: 1px solid rgba(0, 0, 0, 0.06);
+        box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.20) inset;
+        -webkit-box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.20) inset;
+        -moz-box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.20) inset;
         /* background-color: rgb(240, 240, 240); */
     }
 
@@ -528,17 +581,33 @@
         width: 100%;
     }
 
-    #personList:hover {
-        transition: 0.8s;
-    }
+    /*-------------------------------------- EN COURS -----------------------------------------------------------------*/
+    /*-------------------------------------- EN COURS -----------------------------------------------------------------*/
+    /*-------------------------------------- EN COURS -----------------------------------------------------------------*/
+    /*-------------------------------------- EN COURS -----------------------------------------------------------------*/
+    .ulgiftlist:nth-child(even) {}
+
+    .giftlist:first-child {}
+
+    .giftlist:last-child {}
+
+    /*-------------------------------------- EN COURS -----------------------------------------------------------------*/
+    /*-------------------------------------- EN COURS -----------------------------------------------------------------*/
+    /*-------------------------------------- EN COURS -----------------------------------------------------------------*/
+    /*-------------------------------------- EN COURS -----------------------------------------------------------------*/
+    #addPeopleCard {}
+
+    #addPeopleCardBody {}
 
     #personList:hover {
-        background-color: rgb(228, 245, 229);
-
+        background-color: rgb(245, 245, 228);
+        /* border: gainsboro 1px solid; */
     }
 
     #personList:nth-child(even) {
         box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.20) inset;
         -webkit-box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.20) inset;
+        -moz-box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.20) inset;
+        /* background-color: rgb(240, 240, 240); */
     }
 </style>
