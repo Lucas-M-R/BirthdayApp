@@ -8,7 +8,19 @@
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-        <link rel="shortcut icon" href="media/favicon/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="media/favicon/favicon.ico" type="image/x-icon">
+    <link rel= "manifest" href= "manifest.json">
+    
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
+
+
     <title>Oh vue! J'l'avais pas vu!</title>
 </head>
 
@@ -18,18 +30,36 @@
         placeholder="Rechercher une personne">
 
     <main id="peoplelist">
+                    <tr class="d-flex ">
+                        <th>Nom</th>
+                        <th>Age</th>
+                        <th>Anniversaire</th>
+                        <th>Jours restants</th>
+                    </tr> 
 
+                    
         <section class="container-fluid m-0 p-0 d-flex flex-column align-items-center">
 
             <div class="w-100">
-                <ul class="p-0 d-flex flex-column">
+
+                <!-- ////////////////////////////////////////////LISTE PERSONNES MODIFIE POUR TRI///////////////////////////////////////////////////////////////////////////-->
+
+            <!--    <table class="p-0 d-flex flex-column">
+                    <tr>
+                        <th>Photo</th>
+                        <th>Nom</th>
+                        <th>Age</th>
+                        <th>Anniversaire</th>
+                        <th>Jours restants</th>
+                    </tr> 
+
+
+
+
                     <div v-for="item, index in people" :key="index" id="personList">
-                        <li class="d-flex flex-nowrap justify-content-between my-2" :id="item.id" data-bs-toggle="modal"
+                      <tr class="d-flex flex-nowrap justify-content-between my-2" :id="item.id" data-bs-toggle="modal"
                             data-bs-target="#profileModal" v-bind:data-bs-whatever="item.id"
                             v-on:click="selectPeople(index)">
-                            <!-- a remettre dans li pour la modal                   
-                                      
-                            -->
                             <img :src="item.photo" class="rounded-circle " style="height: 75px; width: 75px;" />
                             <div class="d-flex">
                                 <div id="identity">
@@ -37,14 +67,33 @@
                                     <div>{{ item.age}} ans</div>
                                     <div>Fête son anniversaire le {{ item.birth }}</div>
                                 </div>
-
                             </div>
                             <hr>
                             <div class="decompte">{{ item.daysLeft }}</div>
+                        </tr>
+                    </div>
+                </table> -->
+                <!-- ////////////////////////////////////////////LISTE PERSONNES ORIGINAL///////////////////////////////////////////////////////////////////////////-->
+
+                <ul class="p-0 d-flex flex-column">
+                    <div v-for="item, index in people" :key="index" id="personList">
+                        <li class="d-flex flex-nowrap justify-content-between my-2" :id="item.id" data-bs-toggle="modal"
+                            data-bs-target="#profileModal" v-bind:data-bs-whatever="item.id"
+                            v-on:click="selectPeople(index)">
+                            <!-- a remettre dans li pour la modal -->
+                            <img :src="item.photo" class="rounded-circle " style="height: 75px; width: 75px;" />
+                            <div class="d-flex">
+                                <div id="identity">
+                                    <h4>{{ item.name }}</h4>
+                                    <div>{{ item.age}} ans</div>
+                                    <div>Fête son anniversaire le {{ item.birth }}</div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="decompte">Dans {{ item.countdown }} jours</div>
                         </li>
                     </div>
                 </ul>
-
                 <!-- ////////////////////////////////////////////AJOUT ANNIVERSAIRE///////////////////////////////////////////////////////////////////////////-->
 
                 <div id="addPeopleCard">
@@ -63,7 +112,8 @@
                                             placeholder="Date de naissance">
                                         <label for="photo">Photo</label>
                                         <!-- <input v-model="insertphoto" v-on:change type="file" name="photo" accept="image/png, image/jpeg"> -->
-                                        <input v-model="insertphoto" type="text" name="photo" placeholder="Insérez l'url de l'image">
+                                        <input v-model="insertphoto" type="text" name="photo"
+                                            placeholder="Insérez l'url de l'image">
                                     </form>
                                 </div>
                                 <footer>
@@ -79,8 +129,7 @@
             </div>
         </section>
 
-        <!-- ////////////////////////////////////////////AFFICHAGE PROFIL///////////////////////////////////////////////////////////////////////////-->
-
+        <!-- ////////////////////////////////////////////AFFICHAGE PROFIL/////////////////////////////////////////////////////////////////////////// ᓚᘏᗢ un petit chat -->
 
 
         <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
@@ -98,21 +147,33 @@
                                 <div>Fête son anniversaire le {{ dude.birth }}</div>
                             </div>
                         </div>
-                            <div class="decompte">{{ dude.daysLeft }}</div>
+                        <div class="decompte">{{ dude.daysLeft }}</div>
                         <hr>
                         <div></div>
-                        <form v-on:submit.prevent="addgift" action="">
-                        <h2>Cadeaux Offerts et à offrir</h2>
-                        <label for="insertGifDate">Année du cadeau</label>
-                        <select v-model="insertGiftDate" name="insertGiftDate" />
-                        <option v-for="year in years" :value="year">{{year}}</option>
-                        </select>
-                        <label for="insertGif"></label>
-                        <input v-model="insertGift" type="text" name="insertGift" placeholder="Un cadeau passé ou à venir">
+                        <form v-on:submit.prevent="addgift" >
+                            <h2>Cadeaux Offerts et à offrir</h2>
+                            <label for="insertGifDate">Année du cadeau</label>
+                            <select v-model="insertGiftDate" name="insertGiftDate" />
+                            <option v-for="year in years" :value="year">{{year}}</option>
+                            </select>
+                            <label for="insertGif"></label>
+                            <input v-model="insertGift" type="text" name="insertGift"
+                                placeholder="Un cadeau passé ou à venir">
                         </form>
-                        <ul>
-                            <li v-for="gift in gifts">{{gift.gift}} <small> En {{ gift.giftDate}}</small></li>
-                            
+                        <ul class="ulgiftlist">
+                            <li v-for="(gift, key) in gifts">
+                                <div class="giftlist">
+                                    <button class="btn" v-on:click="deleteGift(key)" ><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15"
+                                        viewBox="0 0 24 24">
+                                        <path
+                                            d="M3 6v18h18v-18h-18zm5 14c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm4-18v2h-20v-2h5.711c.9 0 1.631-1.099 1.631-2h5.315c0 .901.73 2 1.631 2h5.712z" />
+                                    </svg>
+                                    </button>
+                                    <p>{{gift.gift}}</p>
+                                    <small class="badge bg-secondary" > En {{ gift.giftDate}}</small>
+                                </div>
+                            </li>
+
                         </ul>
 
                     </div>
@@ -124,7 +185,8 @@
                                     d="M3 6v18h18v-18h-18zm5 14c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm4-18v2h-20v-2h5.711c.9 0 1.631-1.099 1.631-2h5.315c0 .901.73 2 1.631 2h5.712z" />
                             </svg> Supprimer</button>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-                        <button type="button" class="btn btn-primary" v-on:click="giftToPeople(dude.indexLink)">Enregistrer le cadeau</button>
+                        <button type="button" class="btn btn-primary"
+                            v-on:click="giftToPeople(dude.indexLink)">Enregistrer le cadeau</button>
                     </div>
                 </div>
             </div>
@@ -139,6 +201,20 @@
 
 
     <script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         var peoplelist = new Vue({
 
             el: '#peoplelist',
@@ -150,7 +226,7 @@
                 insertphoto: "",
                 insertGift: "",
                 insertGiftDate: "",
-                currentYear:"",
+                currentYear: "",
                 years: [],
                 gifts: [],
                 people: [{
@@ -160,6 +236,7 @@
                     "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Yautja_del_primer_film%2C_conocida_como_Jungle_Hunter_2014-04-15_12-18.jpg/420px-Yautja_del_primer_film%2C_conocida_como_Jungle_Hunter_2014-04-15_12-18.jpg",
                     "birthRaw": "1987-04-23T00:00:00.000Z",
                     "age": 35,
+                    "countdown": "",
                     "gifts": [{
                         "gift": "aspirateur",
                         "giftDate": "2019",
@@ -179,9 +256,10 @@
                     "photo": "https://cdn-www.konbini.com/fr/files/2020/09/freddy_krueger.jpg?ratio=16:9&w=640",
                     "birthRaw": "1942-09-02T00:00:00.000Z",
                     "age": 79,
+                    "countdown": "",
                     "gifts": [{
-                        "gift": "",
-                        "giftDate": "",
+                        "gift": "Hotte assourdissante",
+                        "giftDate": "1987",
                     }],
                 }, {
                     "id": 1639652469881,
@@ -190,9 +268,10 @@
                     "photo": "https://fr.nemesisnow.com/media/catalog/product/cache/7c3262bc18147ce5dc018ae87bc5e673/n/o/now0948.jpg",
                     "birthRaw": "1997-08-29T00:00:00.000Z",
                     "age": 24,
+                    "countdown": "",
                     "gifts": [{
-                        "gift": "",
-                        "giftDate": "",
+                        "gift": "Hotte assourdissante",
+                        "giftDate": "1987",
                     }],
                 }, {
                     "id": 1639652544660,
@@ -201,9 +280,10 @@
                     "photo": "https://file1.telestar.fr/var/telestar/storage/images/3/0/6/0/3060253/peter-weller-dans-robocop.jpg?alias=exact1024x768_l&size=x100&format=webp",
                     "birthRaw": "1987-07-02T00:00:00.000Z",
                     "age": 34,
+                    "countdown": "",
                     "gifts": [{
-                        "gift": "",
-                        "giftDate": "",
+                        "gift": "Hotte assourdissante",
+                        "giftDate": "1987",
                     }],
                 }, {
                     "id": 1639653264803,
@@ -212,9 +292,10 @@
                     "photo": "https://www.kingdom-figurine.fr/wp-content/uploads/2021/04/THE-ALIEN-BLOODY-FIGURINE-ALIEN-40TH-ANNIVERSARY-SERIE-2-NECA-18-CM-6344824000148-kingdom-figurine.fr_0.jpg",
                     "birthRaw": "[native Date Sat Jun 09 1979 02:00:00 GMT+0200 (heure d’été d’Europe centrale)]",
                     "age": 43,
+                    "countdown": "",
                     "gifts": [{
-                        "gift": "",
-                        "giftDate": "",
+                        "gift": "Hotte assourdissante",
+                        "giftDate": "1987",
                     }],
                 }, {
                     "id": 1639657796269,
@@ -223,9 +304,10 @@
                     "photo": "https://www.kuleuven.be/wieiswie/en/person/00004770/photo",
                     "birthRaw": "[native Date Wed Sep 12 1962 01:00:00 GMT+0100 (heure normale d’Europe centrale)]",
                     "age": 59,
+                    "countdown": "",
                     "gifts": [{
-                        "gift": "",
-                        "giftDate": "",
+                        "gift": "Hotte assourdissante",
+                        "giftDate": "1987",
                     }],
                 }, {
                     "id": 1639657862745,
@@ -234,9 +316,9 @@
                     "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Bobostudio_MIRANDA_MERRON_sur_Campagne_de_France_%2815608046026%29.jpg/420px-Bobostudio_MIRANDA_MERRON_sur_Campagne_de_France_%2815608046026%29.jpg",
                     "birthRaw": "[native Date Wed Jul 02 1969 01:00:00 GMT+0100 (heure normale d’Europe centrale)]",
                     "age": 52,
+                    "countdown": "",
                     "gifts": [{
-                        "gift": "",
-                        "giftDate": "",
+
                     }],
                 }, {
                     "id": 1639657988742,
@@ -245,20 +327,31 @@
                     "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Paul_Bocuse_2007_-2.jpg/390px-Paul_Bocuse_2007_-2.jpg",
                     "birthRaw": "[native Date Thu Feb 11 1926 00:00:00 GMT+0000 (heure normale d’Europe centrale)]",
                     "age": 96,
+                    "countdown": "",
                     "gifts": [{
-                        "gift": "",
-                        "giftDate": "",
+                        "gift": "Hotte assourdissante",
+                        "giftDate": "1987",
                     }],
                 }],
                 selected: [],
-                
+
             },
             beforeMount() {
                 var now = new Date();
                 nowMD = (now.getMonth() + 1) + '' + now.getDate();
-                for (dude in this.people) {
+                console.log("nowMD", nowMD)
+                for (i=0; i<this.people.length; i++) {
 
-                    console.log("avant chargement", dude.birth)
+                    console.log("nom", this.people[i].name)
+                    console.log("avant chargement", this.people[i].birthRaw)
+                    birthRaw = new Date(this.people[i].birthRaw)
+                    console.log ("-_-_-_-_-_-_-_-", birthRaw)
+                    let birthday = birthRaw.getDate() + '\/' + (birthRaw.getMonth()+1)
+                    let countdown = ''
+                    console.log ("--------------------", birthday)
+
+
+
                     // let dob = person.birthRaw;
                     // console.log(dob);
                     // doeb = (dob.getMonth()+1)+''+dob.getDate();
@@ -266,15 +359,17 @@
                     // console.log(now);
                     // console.log("dob", dob);
 
-                    // console.log("coucou", nowMD);
-
-
+                    // console.log("coucou", nowMD);                  
 
                 }
+
+
+
+
                 let theTime = new Date()
                 this.currentYear = theTime.getFullYear();
                 console.log("année", this.currentYear)
-                for(let i=this.currentYear; i > 1900; i--){
+                for (let i = this.currentYear; i > 1900; i--) {
                     this.years.push(i);
                 }
 
@@ -305,14 +400,21 @@
                         year: "numeric"
                     };
                     let birthRaw = new Date(this.insertbirth)
+
                     let birthProc = Date.parse(birthRaw)
                     let age = Date.now() - birthRaw
                     age = Math.round(age / (1000 * 60 * 60 * 24 * 365))
                     console.log("birthraw:", birthRaw, " age:", age)
                     dob = dob.toLocaleString("fr-FR", options)
-                    photo = this.insertphoto
+
+                    // let birthday = birthRaw.getDate() + '\/' + (birthRaw.getMonth()+1);
+//////////////////////////////ENCOURS AU DESSUs ET EN DESSOUS///////////////////////////////////////////////////////////////////
+                    // let countdown = ''
+                    //                     console.log ("--------------------", birthday)
+
                     // photo = btoa(this.insertphoto) ///////BASE64 ENCODAGE, DOIT ETRE EN FILE PAS EN TEXT///////////
                     //fin formattage de la date
+                      photo = this.insertphoto
                     this.people.push({
                         id: Date.now(),
                         name: this.insertname,
@@ -334,31 +436,32 @@
                     const parsed = JSON.stringify(this.people)
                     localStorage.setItem('peoplestored', parsed)
                 },
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////A VOIR POUR LES JOURS AVANT ANNIVERSAIRE /////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
+                ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+                /////////////////////////////A VOIR POUR LES JOURS AVANT ANNIVERSAIRE /////////////////////////////////////
+                ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
                 RemainingDays: function () {
                     console.log("en cours")
-//                     for ( const [key,person] of Object.entries( this.people ) ) {
-//                         let dob = person.birthRaw
-                        
-//                         let today = new Date()
-//                         today = today.toDateString()
-//                         let remDays = today - dob
-//                         console.log("RemainingDays", typeof today)
-//                         console.log(key, person.name)
-//                         console.log(remDays)
-// }
+                    //                     for ( const [key,person] of Object.entries( this.people ) ) {
+                    //                         let dob = person.birthRaw
+
+                    //                         let today = new Date()
+                    //                         today = today.toDateString()
+                    //                         let remDays = today - dob
+                    //                         console.log("RemainingDays", typeof today)
+                    //                         console.log(key, person.name)
+                    //                         console.log(remDays)
+                    // }
                 },
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////A VOIR POUR LES JOURS AVANT ANNIVERSAIRE /////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
+                ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+                /////////////////////////////A VOIR POUR LES JOURS AVANT ANNIVERSAIRE /////////////////////////////////////
+                ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
                 selectPeople: function (idvalue) {
                     this.selected = [];
+                    this.gifts = [];
                     // console.log("debut", this.selected)
 
                     // let select = this.people.find(element => element = idvalue);
@@ -372,16 +475,20 @@
                         photo: this.people[idvalue].photo,
                         birthRaw: this.people[idvalue].birthRaw,
                         age: this.people[idvalue].age,
-                        
+
                     });
-                    for (i=0; i<this.people[idvalue].gifts.length; i++){
-                      console.log("selected=>", this.people[idvalue].gifts[i].gift)
-                      console.log("selected=>", this.people[idvalue].gifts[i].giftDate)
-                    this.gifts.push({
-                        gift: this.people[idvalue].gifts[i].gift,
-                        giftDate: this.people[idvalue].gifts[i].giftDate,
-              
-                    })}
+                    for (i = 0; i < this.people[idvalue].gifts.length; i++) {
+                        console.log("selected=>", this.people[idvalue].name)
+                        console.log("selected=>", this.people[idvalue].gifts[i].gift)
+                        console.log("selected=>", this.people[idvalue].gifts[i].giftDate)
+                        if (this.people[idvalue].gifts.length > 0 && this.people[idvalue].gifts.giftDate !== ""){
+                                this.gifts.push({
+                                gift: this.people[idvalue].gifts[i].gift,
+                                giftDate: this.people[idvalue].gifts[i].giftDate,
+                            })
+                        }
+                        
+                    }
                     // this.selected.push({
                     //     id: select.id,
                     //     name: select.name,
@@ -397,13 +504,17 @@
                     index = idvalue[0]
                     console.log(index)
 
-                   for (i=0; i<this.people[index].gifts.length; i++){
-                    console.log("cadeaux debut", this.people[index].gifts[i].gift)
-                   }
+                    for (i = 0; i < this.people[index].gifts.length; i++) {
+                        console.log("cadeaux debut", this.people[index].gifts[i].gift)
+                    }
                     // let select = this.people.find(element => element = idvalue);
                     // console.log(select)
-                    
+
                     this.people[index].gifts.push({
+                        gift: this.insertGift,
+                        giftDate: this.insertGiftDate,
+                    });
+                    this.gifts.push({
                         gift: this.insertGift,
                         giftDate: this.insertGiftDate,
                     });
@@ -415,9 +526,20 @@
                     //     birthRaw: select.birthRaw, 
                     //     age: select.age,
                     // });
-                    for (i=0; i<this.people[index].gifts.length; i++){
-                    console.log("cadeaux après", this.people[index].gifts[i].gift)
-                   }
+                    for (i = 0; i < this.people[index].gifts.length; i++) {
+                        console.log("cadeaux après pour ", this.people[index].name, ' ', this.people[index].gifts[i].gift)
+                    }
+////////////////////////////////////EN COURS REMISE A ZERO ///////////////////////////////////
+                    insertGift = "";
+                     insertGiftDate = "";
+////////////////////////////////////FIN EN COURS REMISE A ZERO ///////////////////////////////////
+
+                },
+                deleteGift: function (key) {
+                    let selected = this.selected[0].indexLink[0]
+                    console.log("deleeeeeeeeeeeeeeeeeeeeeeeeeeeeeete =>", key, "indexlink", selected)
+                    this.people[selected].gifts.splice(key, 1)
+                    this.gifts.splice(key, 1)
                 }
             }
 
@@ -464,16 +586,37 @@
             },
             methods: {
                 reverseMessage: function () {
-                    this.message = this.message.split('').reverse().join('')
+                    this.message = this.message.split('').reverse().join('');
                 }
             }
-        })
+        });
         // fin la blague Vue.js
-    </script>
+    
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
-    </script>
+
+
+
+
+/////////////////////////////////////// SERVICE WORKER ////////////////////////////////////
+function registerServiceWorker() {
+  // enregistre le script sw avec les navigateurs qui le gèrent
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js', { scope: '/' }).then(() => {
+      console.log('Service Worker enregistré correctement.');
+    }).catch(error => {
+      console.log("Erreur lors de l'enregistrement du Service Worker : ", error);
+    });
+  }
+}
+/////////////////////////////////////// SERVICE WORKER ////////////////////////////////////
+</script>
+
+<!--//////////////////////////////// SCRIPT BOOTSTRAP //////////////////////////////////////-->
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+</script>
+<!--//////////////////////////////// SCRIPT BOOTSTRAP //////////////////////////////////////-->
 
 </body>
 
@@ -481,18 +624,53 @@
 
 
 <style>
+    ul{
+        margin: 0;
+        padding: 0;
+        box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.20) inset;
+        -webkit-box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.20) inset;
+        -moz-box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.20) inset;
+        /* background-color: rgb(240, 240, 240); */
+    }
+    .giftlist{
+        border: 1px solid black;
+        list-style-type: none;        
+        display: flex;
+        align-self: center;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+    }
+    /*-------------------------------------- EN COURS -----------------------------------------------------------------*/
+    /*-------------------------------------- EN COURS -----------------------------------------------------------------*/
+    /*-------------------------------------- EN COURS -----------------------------------------------------------------*/
+    /*-------------------------------------- EN COURS -----------------------------------------------------------------*/
+    .ulgiftlist:nth-child(even){
+
+    }
+    .giftlist:first-child{
+        
+    }
+    .giftlist:last-child{
+
+    }
+    /*-------------------------------------- EN COURS -----------------------------------------------------------------*/
+    /*-------------------------------------- EN COURS -----------------------------------------------------------------*/
+    /*-------------------------------------- EN COURS -----------------------------------------------------------------*/
+    /*-------------------------------------- EN COURS -----------------------------------------------------------------*/
     #addPeopleCard {}
 
     #addPeopleCardBody {}
 
-    #personList{
+    #personList:hover {
+        background-color: rgb(245, 245, 228);
         /* border: gainsboro 1px solid; */
     }
-    #personList:nth-child(even){
-        box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.20) inset;
-        -webkit-box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.20) inset;
-        -moz-box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.20) inset;
-        /* background-color: rgb(240, 240, 240); */
 
+    #personList:nth-child(even) {
+        box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.20) inset;
+        -webkit-box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.20) inset;
+        -moz-box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.20) inset;
+        /* background-color: rgb(240, 240, 240); */
     }
 </style>
