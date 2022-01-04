@@ -9,16 +9,18 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="shortcut icon" href="media/favicon/favicon.ico" type="image/x-icon">
-    <link rel= "manifest" href= "manifest.json">
-    
+    <!-- UTILISATION DE LA LIBRAIRIE LODASH JUSTE POUR TRIER UN TABLEAU ??? -->
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
+    <link rel="manifest" href="manifest.json">
 
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="manifest" href="/site.webmanifest">
-<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
-<meta name="msapplication-TileColor" content="#da532c">
-<meta name="theme-color" content="#ffffff">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
 
 
     <title>Oh vue! J'l'avais pas vu!</title>
@@ -26,108 +28,79 @@
 
 <body>
     <h1 id="title" v-on:click="reverseMessage" class="h1 text-center"><strong>{{ message}}</strong></h1>
-    <input class="form-text form-control rounded-pill" type="text" name="search" id="search"
-        placeholder="Rechercher une personne">
 
-    <main id="peoplelist">
-                    <tr class="d-flex ">
-                        <th>Nom</th>
-                        <th>Age</th>
-                        <th>Anniversaire</th>
-                        <th>Jours restants</th>
-                    </tr> 
+    <main id="peoplelist" class="container-fluid m-0 p-0 d-flex flex-column align-items-center">
+        
+        <div>
+            <button class="btn btn-outline-dark">Nom</button>
+            <button class="btn btn-outline-dark">Age</button>
+            <button class="btn btn-outline-dark">Anniversaire</button>
+            <button class="btn btn-outline-dark">Jours restants</button>
+        </div>
+        <!-- Button trigger modal ajout anniversaire -->
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addBirthday">
+            Ajouter un anniversaire
+        </button>
 
-                    
-        <section class="container-fluid m-0 p-0 d-flex flex-column align-items-center">
+        <!-- ////////////////////////////////////////////AFFICHAGE LISTE///////////////////////////////////////////////////////////////////////////-->
 
-            <div class="w-100">
-
-                <!-- ////////////////////////////////////////////LISTE PERSONNES MODIFIE POUR TRI///////////////////////////////////////////////////////////////////////////-->
-
-            <!--    <table class="p-0 d-flex flex-column">
-                    <tr>
-                        <th>Photo</th>
-                        <th>Nom</th>
-                        <th>Age</th>
-                        <th>Anniversaire</th>
-                        <th>Jours restants</th>
-                    </tr> 
-
-
-
-
-                    <div v-for="item, index in people" :key="index" id="personList">
-                      <tr class="d-flex flex-nowrap justify-content-between my-2" :id="item.id" data-bs-toggle="modal"
-                            data-bs-target="#profileModal" v-bind:data-bs-whatever="item.id"
-                            v-on:click="selectPeople(index)">
-                            <img :src="item.photo" class="rounded-circle " style="height: 75px; width: 75px;" />
-                            <div class="d-flex">
-                                <div id="identity">
-                                    <h4>{{ item.name }}</h4>
-                                    <div>{{ item.age}} ans</div>
-                                    <div>Fête son anniversaire le {{ item.birth }}</div>
-                                </div>
+        <section>
+            <ul class="p-0 d-flex flex-column">
+                <div v-for="item, index in peopleOrdered" :key="index" id="personList">
+                    <li class="d-flex flex-nowrap justify-content-between my-2 p-2" :id="item.id" data-bs-toggle="modal"
+                        data-bs-target="#profileModal" v-bind:data-bs-whatever="item.id"
+                        v-on:click="selectPeople(index)">
+                        <img :src="item.photo" class="rounded-circle " style="height: 75px; width: 75px;" />
+                        <div class="d-flex">
+                            <div id="identity">
+                                <h4>{{ item.name }}</h4>
+                                <div>{{ item.age}} ans</div>
+                                <div>Né le {{ item.birth }}</div>
                             </div>
-                            <hr>
-                            <div class="decompte">{{ item.daysLeft }}</div>
-                        </tr>
-                    </div>
-                </table> -->
-                <!-- ////////////////////////////////////////////LISTE PERSONNES ORIGINAL///////////////////////////////////////////////////////////////////////////-->
-
-                <ul class="p-0 d-flex flex-column">
-                    <div v-for="item, index in people" :key="index" id="personList">
-                        <li class="d-flex flex-nowrap justify-content-between my-2" :id="item.id" data-bs-toggle="modal"
-                            data-bs-target="#profileModal" v-bind:data-bs-whatever="item.id"
-                            v-on:click="selectPeople(index)">
-                            <!-- a remettre dans li pour la modal -->
-                            <img :src="item.photo" class="rounded-circle " style="height: 75px; width: 75px;" />
-                            <div class="d-flex">
-                                <div id="identity">
-                                    <h4>{{ item.name }}</h4>
-                                    <div>{{ item.age}} ans</div>
-                                    <div>Fête son anniversaire le {{ item.birth }}</div>
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="decompte">Dans {{ item.countdown }} jours</div>
-                        </li>
-                    </div>
-                </ul>
-                <!-- ////////////////////////////////////////////AJOUT ANNIVERSAIRE///////////////////////////////////////////////////////////////////////////-->
-
-                <div id="addPeopleCard">
-                    <div class="card">
-                        <div class="card-header bg-success text-center">
-                            <h2>Ajouter un anniversaire</h2>
                         </div>
-                        <div class="card-body" id="addPeopleCardBody">
+                        <hr>
+                        <div class="decompte">{{ item.countdownMessage }}</div>
+                    </li>
+                </div>
+            </ul>
+        </section>
+                <!-- ////////////////////////////////////////////MODAL AJOUT ANNIVERSAIRE///////////////////////////////////////////////////////////////////////////-->
+
+             
+            <div class="modal fade" id="addBirthday" tabindex="-1" aria-labelledby="addBirthdayLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="addBirthdayLabel">Ajouter un anniversaire</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body" id="addPeopleCardBody">
                             <blockquote class="blockquote mb-0">
-                                <div>
-                                    <form v-on:submit.prevent="addNewBirthday" action="" class="d-flex flex-column ">
-                                        <label for="nom">Nom</label>
-                                        <input v-model="insertname" type="text" name="name" placeholder="nom">
-                                        <label for="birth">Date de naissance</label>
-                                        <input v-model="insertbirth" type="date" name="birth"
-                                            placeholder="Date de naissance">
-                                        <label for="photo">Photo</label>
-                                        <!-- <input v-model="insertphoto" v-on:change type="file" name="photo" accept="image/png, image/jpeg"> -->
-                                        <input v-model="insertphoto" type="text" name="photo"
-                                            placeholder="Insérez l'url de l'image">
-                                    </form>
-                                </div>
-                                <footer>
-                                    <button v-on:click="pushPeople" class="btn btn-primary">Ajouter</button>
-                                    <button class="btn btn-light" v-on:click="RemainingDays">Fermer</button>
 
-
-                                </footer>
+                                <form v-on:submit.prevent="addNewBirthday" action="" class="d-flex flex-column ">
+                                    <label for="nom">Nom</label>
+                                    <input v-model="insertname" type="text" name="name" placeholder="nom">
+                                    <label for="birth">Date de naissance</label>
+                                    <input v-model="insertbirth" type="date" name="birth"
+                                        placeholder="Date de naissance">
+                                    <label for="photo">Photo</label>
+                                    <!-- <input v-model="insertphoto" v-on:change type="file" name="photo" accept="image/png, image/jpeg"> -->
+                                    <input v-model="insertphoto" type="text" name="photo"
+                                        placeholder="Insérez l'url de l'image">
+                                </form>
                             </blockquote>
+                        </div>
+                        <div class="modal-footer">
+                            <button v-on:click="pushPeople" class="btn btn-primary" data-bs-dismiss="modal">Ajouter</button>
+                            <button class="btn btn-light" v-on:click="RemainingDays"
+                                data-bs-dismiss="modal">Fermer</button>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
+     
+
 
         <!-- ////////////////////////////////////////////AFFICHAGE PROFIL/////////////////////////////////////////////////////////////////////////// ᓚᘏᗢ un petit chat -->
 
@@ -150,7 +123,7 @@
                         <div class="decompte">{{ dude.daysLeft }}</div>
                         <hr>
                         <div></div>
-                        <form v-on:submit.prevent="addgift" >
+                        <form v-on:submit.prevent="addgift">
                             <h2>Cadeaux Offerts et à offrir</h2>
                             <label for="insertGifDate">Année du cadeau</label>
                             <select v-model="insertGiftDate" name="insertGiftDate" />
@@ -160,21 +133,20 @@
                             <input v-model="insertGift" type="text" name="insertGift"
                                 placeholder="Un cadeau passé ou à venir">
                         </form>
-                        <ul class="ulgiftlist">
-                            <li v-for="(gift, key) in gifts">
-                                <div class="giftlist">
-                                    <button class="btn" v-on:click="deleteGift(key)" ><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15"
-                                        viewBox="0 0 24 24">
-                                        <path
-                                            d="M3 6v18h18v-18h-18zm5 14c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm4-18v2h-20v-2h5.711c.9 0 1.631-1.099 1.631-2h5.315c0 .901.73 2 1.631 2h5.712z" />
-                                    </svg>
-                                    </button>
-                                    <p>{{gift.gift}}</p>
-                                    <small class="badge bg-secondary" > En {{ gift.giftDate}}</small>
-                                </div>
-                            </li>
+                        <table>
+                            <tr v-for="(gift, key) in gifts">
+                                <td><button class="btn" v-on:click="deleteGift(key)"><svg
+                                            xmlns="http://www.w3.org/2000/svg" width="15" height="15"
+                                            viewBox="0 0 24 24">
+                                            <path
+                                                d="M3 6v18h18v-18h-18zm5 14c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm4-18v2h-20v-2h5.711c.9 0 1.631-1.099 1.631-2h5.315c0 .901.73 2 1.631 2h5.712z" />
+                                        </svg>
+                                    </button></td>
+                                <td>{{gift.gift}}</td>
+                                <td>{{ gift.giftDate}}</td>
+                            </tr>
 
-                        </ul>
+                        </table>
 
                     </div>
                     <div class="modal-footer">
@@ -202,23 +174,9 @@
 
     <script>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
         var peoplelist = new Vue({
 
             el: '#peoplelist',
-
 
             data: {
                 insertname: "",
@@ -334,34 +292,17 @@
                     }],
                 }],
                 selected: [],
-
+                
             },
-            beforeMount() {
-                var now = new Date();
-                nowMD = (now.getMonth() + 1) + '' + now.getDate();
-                console.log("nowMD", nowMD)
-                for (i=0; i<this.people.length; i++) {
-
-                    console.log("nom", this.people[i].name)
-                    console.log("avant chargement", this.people[i].birthRaw)
-                    birthRaw = new Date(this.people[i].birthRaw)
-                    console.log ("-_-_-_-_-_-_-_-", birthRaw)
-                    let birthday = birthRaw.getDate() + '\/' + (birthRaw.getMonth()+1)
-                    let countdown = ''
-                    console.log ("--------------------", birthday)
-
-
-
-                    // let dob = person.birthRaw;
-                    // console.log(dob);
-                    // doeb = (dob.getMonth()+1)+''+dob.getDate();
-                    // let days = person.daysLeft;
-                    // console.log(now);
-                    // console.log("dob", dob);
-
-                    // console.log("coucou", nowMD);                  
-
+            computed: {
+                peopleOrdered: function (){
+                    return _.orderBy(this.people, 'countdown')
                 }
+            },
+
+            
+            beforeMount() {
+
 
 
 
@@ -384,10 +325,69 @@
                         localStorage.removeItem('peoplestored');
                     }
                 }
-                for (person in this.people) {
-                    console.log("après chargement", person.name)
-                }
+                this.people.forEach(element => console.log("chargement des gens", element.name))
+                    
+                
 
+
+
+                //////////////////////////calcul jours/mois
+                var now = new Date();
+                var currentYear = now.getFullYear()
+                nowMD = (now.getMonth() + 1) + '' + now.getDate();
+                console.log("nowMD", nowMD)
+
+
+                for (i = 0; i < this.people.length; i++) {
+                    console.log("nom", this.people[i].name)
+                    console.log("avant chargement", this.people[i].birthRaw)
+                    birthRaw = new Date(this.people[i].birthRaw)
+                    let birthRawNow = new Date(this.people[i].birthRaw)
+                    console.log("-_-_-_-_-_-_-_-date brute avant", birthRaw)                    
+                    birthRaw.setFullYear(currentYear)
+                    console.log("-_-_-_-_-_-_-_-date brute après", birthRaw)
+
+                    let birthday = birthRaw.getDate() + '\/' + (birthRaw.getMonth()+1)
+
+                    let countdown = Math.round((birthRaw - now) / 1000 / 60 / 60 / 24)
+                    var countdownMessage = ""
+                    if (countdown === 0){
+                         countdownMessage = "C'est son anniversaire!"
+
+
+                    }
+                    else if (countdown > 0){
+                        countdownMessage = "Dans " + countdown + " jours"
+                    }
+                    else {
+                        countdown = 365 - countdown
+                    countdownMessage = "Dans " + countdown + " jours"
+                    
+                     }
+                    this.people[i].countdownMessage = countdownMessage
+                    this.people[i].countdown = countdown
+                    ////////////////////EN COURS DE MARDI 4 JANVIER ////////////////////////////
+
+                   
+                    
+ 
+                    console.log("--------------------", countdownMessage)
+                    console.log("--------------------", countdown)
+                    console.log("--------------------", birthday)
+                   
+
+
+
+                    // let dob = person.birthRaw;
+                    // console.log(dob);
+                    // doeb = (dob.getMonth()+1)+''+dob.getDate();
+                    // let days = person.daysLeft;
+                    // console.log(now);
+                    // console.log("dob", dob);
+
+                    // console.log("coucou", nowMD);                  
+
+                }
             },
             methods: {
                 pushPeople: function () {
@@ -408,13 +408,13 @@
                     dob = dob.toLocaleString("fr-FR", options)
 
                     // let birthday = birthRaw.getDate() + '\/' + (birthRaw.getMonth()+1);
-//////////////////////////////ENCOURS AU DESSUs ET EN DESSOUS///////////////////////////////////////////////////////////////////
+                    //////////////////////////////ENCOURS AU DESSUs ET EN DESSOUS///////////////////////////////////////////////////////////////////
                     // let countdown = ''
                     //                     console.log ("--------------------", birthday)
 
                     // photo = btoa(this.insertphoto) ///////BASE64 ENCODAGE, DOIT ETRE EN FILE PAS EN TEXT///////////
                     //fin formattage de la date
-                      photo = this.insertphoto
+                    photo = this.insertphoto
                     this.people.push({
                         id: Date.now(),
                         name: this.insertname,
@@ -481,13 +481,13 @@
                         console.log("selected=>", this.people[idvalue].name)
                         console.log("selected=>", this.people[idvalue].gifts[i].gift)
                         console.log("selected=>", this.people[idvalue].gifts[i].giftDate)
-                        if (this.people[idvalue].gifts.length > 0 && this.people[idvalue].gifts.giftDate !== ""){
-                                this.gifts.push({
+                        if (this.people[idvalue].gifts.length > 0 && this.people[idvalue].gifts.giftDate !== "") {
+                            this.gifts.push({
                                 gift: this.people[idvalue].gifts[i].gift,
                                 giftDate: this.people[idvalue].gifts[i].giftDate,
                             })
                         }
-                        
+
                     }
                     // this.selected.push({
                     //     id: select.id,
@@ -529,10 +529,10 @@
                     for (i = 0; i < this.people[index].gifts.length; i++) {
                         console.log("cadeaux après pour ", this.people[index].name, ' ', this.people[index].gifts[i].gift)
                     }
-////////////////////////////////////EN COURS REMISE A ZERO ///////////////////////////////////
+                    ////////////////////////////////////EN COURS REMISE A ZERO ///////////////////////////////////
                     insertGift = "";
-                     insertGiftDate = "";
-////////////////////////////////////FIN EN COURS REMISE A ZERO ///////////////////////////////////
+                    insertGiftDate = "";
+                    ////////////////////////////////////FIN EN COURS REMISE A ZERO ///////////////////////////////////
 
                 },
                 deleteGift: function (key) {
@@ -591,32 +591,31 @@
             }
         });
         // fin la blague Vue.js
-    
 
 
 
 
 
+
+        /////////////////////////////////////// SERVICE WORKER ////////////////////////////////////
+        function registerServiceWorker() {
+            // enregistre le script sw avec les navigateurs qui le gèrent
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('sw.js', { scope: '/' }).then(() => {
+                    console.log('Service Worker enregistré correctement.');
+                }).catch(error => {
+                    console.log("Erreur lors de l'enregistrement du Service Worker : ", error);
+                });
+            }
+        }
 /////////////////////////////////////// SERVICE WORKER ////////////////////////////////////
-function registerServiceWorker() {
-  // enregistre le script sw avec les navigateurs qui le gèrent
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js', { scope: '/' }).then(() => {
-      console.log('Service Worker enregistré correctement.');
-    }).catch(error => {
-      console.log("Erreur lors de l'enregistrement du Service Worker : ", error);
-    });
-  }
-}
-/////////////////////////////////////// SERVICE WORKER ////////////////////////////////////
-</script>
+    </script>
 
-<!--//////////////////////////////// SCRIPT BOOTSTRAP //////////////////////////////////////-->
-<script
-    src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
-</script>
-<!--//////////////////////////////// SCRIPT BOOTSTRAP //////////////////////////////////////-->
+    <!--//////////////////////////////// SCRIPT BOOTSTRAP //////////////////////////////////////-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+        </script>
+    <!--//////////////////////////////// SCRIPT BOOTSTRAP //////////////////////////////////////-->
 
 </body>
 
@@ -624,7 +623,7 @@ function registerServiceWorker() {
 
 
 <style>
-    ul{
+    ul {
         margin: 0;
         padding: 0;
         box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.20) inset;
@@ -632,28 +631,27 @@ function registerServiceWorker() {
         -moz-box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.20) inset;
         /* background-color: rgb(240, 240, 240); */
     }
-    .giftlist{
+
+    .giftlist {
         border: 1px solid black;
-        list-style-type: none;        
+        list-style-type: none;
         display: flex;
         align-self: center;
         align-items: center;
         justify-content: space-between;
         width: 100%;
     }
-    /*-------------------------------------- EN COURS -----------------------------------------------------------------*/
-    /*-------------------------------------- EN COURS -----------------------------------------------------------------*/
-    /*-------------------------------------- EN COURS -----------------------------------------------------------------*/
-    /*-------------------------------------- EN COURS -----------------------------------------------------------------*/
-    .ulgiftlist:nth-child(even){
 
-    }
-    .giftlist:first-child{
-        
-    }
-    .giftlist:last-child{
+    /*-------------------------------------- EN COURS -----------------------------------------------------------------*/
+    /*-------------------------------------- EN COURS -----------------------------------------------------------------*/
+    /*-------------------------------------- EN COURS -----------------------------------------------------------------*/
+    /*-------------------------------------- EN COURS -----------------------------------------------------------------*/
+    .ulgiftlist:nth-child(even) {}
 
-    }
+    .giftlist:first-child {}
+
+    .giftlist:last-child {}
+
     /*-------------------------------------- EN COURS -----------------------------------------------------------------*/
     /*-------------------------------------- EN COURS -----------------------------------------------------------------*/
     /*-------------------------------------- EN COURS -----------------------------------------------------------------*/

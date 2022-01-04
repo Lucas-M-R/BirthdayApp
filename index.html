@@ -10,7 +10,150 @@
 </head>
 
 <body>
-  
-</body>
+    <main>
+  <table>
+      <tr>
+          <th>Photo</th>
+          <th>Nom</th>
+          <th>Age</th>
+          <th>Anniversaire</th>
+          <th>Jours restants</th>
+      </tr>
+      <tr v-for="item, index in people" :key="index" id="item.id" data-bs-toggle="modal"
+      data-bs-target="#profileModal" v-bind:data-bs-whatever="item.id" v-on:click="selectPeople(index)">
+        <td><img :src="item.photo" class="rounded-circle " style="height: 75px; width: 75px;" /></td>
+        <td>{{ item.name }}</td>
+        <td>{{ item.age}} ans</td>
+        <td>{{ item.birth }}</td>
+        <td>{{ item.countdown }}</td>
+      </tr>
+  </table>
+  </main>
 
+<script>
+var peoplelist = new Vue({
+
+el: '#peoplelist',
+
+
+data: {
+    insertname: "",
+    insertbirth: "",
+    insertphoto: "",
+    insertGift: "",
+    insertGiftDate: "",
+    currentYear: "",
+    years: [],
+    gifts: [],
+    people: [{
+        "id": 1639652282611,
+        "name": "Predator",
+        "birth": "jeudi 23/04/1987",
+        "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Yautja_del_primer_film%2C_conocida_como_Jungle_Hunter_2014-04-15_12-18.jpg/420px-Yautja_del_primer_film%2C_conocida_como_Jungle_Hunter_2014-04-15_12-18.jpg",
+        "birthRaw": "1987-04-23T00:00:00.000Z",
+        "age": 35,
+        "countdown": "",
+        "gifts": [{
+            "gift": "aspirateur",
+            "giftDate": "2019",
+        },
+        {
+            "gift": "casque avec visière",
+            "giftDate": "2018",
+        },
+        {
+            "gift": "Detonateur",
+            "giftDate": "2020",
+        }],
+    }, {
+        "id": 1639652349061,
+        "name": "Freddy Krueger",
+        "birth": "mercredi 02/09/1942",
+        "photo": "https://cdn-www.konbini.com/fr/files/2020/09/freddy_krueger.jpg?ratio=16:9&w=640",
+        "birthRaw": "1942-09-02T00:00:00.000Z",
+        "age": 79,
+        "countdown": "",
+        "gifts": [{
+            "gift": "Hotte assourdissante",
+            "giftDate": "1987",
+        }],
+    }, {
+        "id": 1639652469881,
+        "name": "T- 800 Terminator",
+        "birth": "vendredi 29/08/1997",
+        "photo": "https://fr.nemesisnow.com/media/catalog/product/cache/7c3262bc18147ce5dc018ae87bc5e673/n/o/now0948.jpg",
+        "birthRaw": "1997-08-29T00:00:00.000Z",
+        "age": 24,
+        "countdown": "",
+        "gifts": [{
+            "gift": "Hotte assourdissante",
+            "giftDate": "1987",
+        }],
+    }, {
+        "id": 1639652544660,
+        "name": "Alexander « Alex » James Murphy",
+        "birth": "jeudi 02/07/1987",
+        "photo": "https://file1.telestar.fr/var/telestar/storage/images/3/0/6/0/3060253/peter-weller-dans-robocop.jpg?alias=exact1024x768_l&size=x100&format=webp",
+        "birthRaw": "1987-07-02T00:00:00.000Z",
+        "age": 34,
+        "countdown": "",
+        "gifts": [{
+            "gift": "Hotte assourdissante",
+            "giftDate": "1987",
+        }],
+    }, {
+        "id": 1639653264803,
+        "name": "Alien",
+        "birth": "samedi 09/06/1979",
+        "photo": "https://www.kingdom-figurine.fr/wp-content/uploads/2021/04/THE-ALIEN-BLOODY-FIGURINE-ALIEN-40TH-ANNIVERSARY-SERIE-2-NECA-18-CM-6344824000148-kingdom-figurine.fr_0.jpg",
+        "birthRaw": "[native Date Sat Jun 09 1979 02:00:00 GMT+0200 (heure d’été d’Europe centrale)]",
+        "age": 43,
+        "countdown": "",
+        "gifts": [{
+            "gift": "Hotte assourdissante",
+            "giftDate": "1987",
+        }],
+    }, {
+        "id": 1639657796269,
+        "name": "Patrick Verschueren",
+        "birth": "mercredi 12/09/1962",
+        "photo": "https://www.kuleuven.be/wieiswie/en/person/00004770/photo",
+        "birthRaw": "[native Date Wed Sep 12 1962 01:00:00 GMT+0100 (heure normale d’Europe centrale)]",
+        "age": 59,
+        "countdown": "",
+        "gifts": [{
+            "gift": "Hotte assourdissante",
+            "giftDate": "1987",
+        }],
+    }, {
+        "id": 1639657862745,
+        "name": "Miranda Merron",
+        "birth": "mercredi 02/07/1969",
+        "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Bobostudio_MIRANDA_MERRON_sur_Campagne_de_France_%2815608046026%29.jpg/420px-Bobostudio_MIRANDA_MERRON_sur_Campagne_de_France_%2815608046026%29.jpg",
+        "birthRaw": "[native Date Wed Jul 02 1969 01:00:00 GMT+0100 (heure normale d’Europe centrale)]",
+        "age": 52,
+        "countdown": "",
+        "gifts": [{
+
+        }],
+    }, {
+        "id": 1639657988742,
+        "name": "Paul Bocuse",
+        "birth": "jeudi 11/02/1926",
+        "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Paul_Bocuse_2007_-2.jpg/390px-Paul_Bocuse_2007_-2.jpg",
+        "birthRaw": "[native Date Thu Feb 11 1926 00:00:00 GMT+0000 (heure normale d’Europe centrale)]",
+        "age": 96,
+        "countdown": "",
+        "gifts": [{
+            "gift": "Hotte assourdissante",
+            "giftDate": "1987",
+        }],
+    }],
+    selected: [],
+
+}
+
+
+</script>
+</body>
 </html>
