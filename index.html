@@ -76,9 +76,11 @@
                                 <label for="birth">Date de naissance</label>
                                 <input v-model="insertbirth" type="date" name="birth" placeholder="Date de naissance">
                                 <label for="photo">Photo</label>
+                                <input type="file" @change="convertImg" class="custom-input"
+                                    accept="image/*">
                                 <!-- <input v-model="insertphoto" v-on:change type="file" name="photo" accept="image/png, image/jpeg"> -->
-                                <input v-model="insertphoto" type="text" name="photo"
-                                    placeholder="Insérez l'url de l'image">
+                                <!-- <input v-model="insertphoto" type="text" name="photo"
+                                    placeholder="Insérez l'url de l'image"> -->
                             </form>
                         </blockquote>
                     </div>
@@ -302,6 +304,19 @@
                 }
             },
             methods: {
+                convertImg: function (event) {
+                    let file = event.target.files[0];
+                    const reader = new FileReader();
+                    reader.readAsDataURL(file);
+                    reader.onload = (file) => {
+                        this.insertphoto = reader.result;
+                    }
+                    reader.onerror = function (error) {
+                        console.log('Error: ', error);
+                    };
+
+
+                },
                 pushPeople: function () {
                     //formattage de la date
                     let dob = new Date(this.insertbirth);
@@ -319,13 +334,13 @@
                     console.log("birthraw:", birthRaw, " age:", age)
                     dob = dob.toLocaleString("fr-FR", options)
 
-                    // let birthday = birthRaw.getDate() + '\/' + (birthRaw.getMonth()+1);
-                    //////////////////////////////ENCOURS AU DESSUS ET EN DESSOUS///////////////////////////////////////////////////////////////////
-                    //////////////////////////////C'EST BON COOL COOL C'EST REGLE///////////////////////////////////////////////////////////////////
-                    // let countdown = ''
-                    //                     console.log ("--------------------", birthday)
 
-                    // photo = btoa(this.insertphoto) ///////BASE64 ENCODAGE, DOIT ETRE EN FILE PAS EN TEXT///////////
+
+
+
+
+
+                    // photo64 = btoa(this.insertphoto) ///////BASE64 ENCODAGE, DOIT ETRE EN FILE PAS EN TEXT///////////
                     //fin formattage de la date
                     if (this.insertphoto === "") {
                         let alea = Math.floor(Math.random() * 10000 + 1)
@@ -346,7 +361,9 @@
                         index: this.people.length
                     });
                     this.savePeople();
-
+                    this.insertphoto = "";
+                    this.insertbirth = "";
+                    this.insertname = "";
                 },
                 deletePeople: function (idValue) {
                     this.people.splice(idValue[0], 1);
@@ -407,6 +424,9 @@
                         // console.log("cadeaux après pour ", this.people[index].name, ' ', this.people[index].gifts[i].gift)
                     }
                     this.savePeople();
+                    this.insertGift = "";
+                    this.insertGiftDate = "";
+
                 },
 
                 deleteGift: function (key) {
